@@ -1,26 +1,13 @@
+import { useReducer } from "react"
 import Guitar from "./components/Guitar"
 import Header from "./components/Header"
-import { useCart } from './hooks/useCart'
+//import { useCart } from './hooks/useCart'
+import { CardReducer, initialSate } from "./reducer/card-reducer"
 
 function App() {
 
-  const { data, cart, addToCart, removeFromCart, decreaseQuantity, increaseQuantity, clearCart, isEmpty, cartTotal } = useCart()
-
-  return (
-    <>
-      <Header 
-        cart={cart}
-        removeFromCart={removeFromCart}
-        decreaseQuantity={decreaseQuantity}
-        increaseQuantity={increaseQuantity}
-        clearCart={clearCart}
-        isEmpty={isEmpty}
-        cartTotal={cartTotal}
-      />
-      
-      <main className="container-xl mt-5">
-          <h2 className="text-center">Nuestra Colección</h2>
-
+  /*const { data, cart, addToCart, removeFromCart, decreaseQuantity, increaseQuantity, clearCart, isEmpty, cartTotal } = useCart()
+  //recorrrido con UseState
           <div className="row mt-5">
               {data.map((guitar) => (
                   <Guitar 
@@ -29,7 +16,39 @@ function App() {
                     addToCart={addToCart}
                   />
               ))}
-              
+          </div>
+          //componentes antes de useReducer
+        <Header 
+        cart={cart}
+        removeFromCart={removeFromCart}
+        decreaseQuantity={decreaseQuantity}
+        increaseQuantity={increaseQuantity}
+        clearCart={clearCart}
+        isEmpty={isEmpty}
+        cartTotal={cartTotal}
+      />
+  */
+  const [state, dispatch] = useReducer(CardReducer,initialSate);
+  console.log(dispatch)
+  return (
+    <>
+      <Header 
+        card={state.card}
+        dispatch={dispatch}
+      />
+      
+      <main className="container-xl mt-5">
+          <h2 className="text-center">Nuestra Colección</h2>
+
+          <div className="row mt-5">
+              {state?.data.map((guitar: any) => (
+                  <Guitar 
+                    key={guitar.id}
+                    guitar={guitar}
+                    dispatch={dispatch}
+                    //addToCart={addToCart}
+                  />
+              ))}
           </div>
       </main>
 
