@@ -7,7 +7,11 @@ export type cardActions =
 { type: 'decrease-quantity', payload: {id: Guitar['id']}} |
 { type: 'increase-quantity', payload: {id: Guitar['id']}} |
 { type: 'clear-card' }
-
+const initialCart = () : CartItem[] => {
+    //retorna lo que hay en local stroge de lo contrario si no hay nada retorna vacio ? 
+    const localStorageCart = localStorage.getItem('cart')
+    return localStorageCart ? JSON.parse(localStorageCart) : []
+}
 
 export type CardState ={
     data: Guitar[],
@@ -15,7 +19,7 @@ export type CardState ={
 }
 export const initialSate: CardState = {
     data: db,
-    card:[]
+    card:initialCart()
 }
 const MIN_ITEMS = 1
 const MAX_ITEMS = 5
@@ -91,8 +95,10 @@ export const CardReducer = (
 
     }
     if(action.type === 'clear-card'){
-        state.card = []
-        return state
+        return {
+            ...state,
+            card: state.card = []
+        }
     }
 
 }
